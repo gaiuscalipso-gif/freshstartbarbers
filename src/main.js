@@ -1,3 +1,5 @@
+import { loadContent } from './content.js';
+import { initAdmin } from './admin.js';
 import '@fontsource-variable/inter';
 import '@fontsource-variable/cormorant-garamond';
 import '@fontsource-variable/cormorant-garamond/wght-italic.css';
@@ -865,6 +867,15 @@ function renderFaqs() {
 }
 
 /* ═══════════ Init ═══════════ */
+async function startSite() {
+await loadContent();
+initAdmin();
+// Keep the footer's popular-service prices aligned with the live menu.
+$$('.footer__col [data-book-service]').forEach(button => {
+  const service = SERVICES.find(s => s.id === button.dataset.bookService);
+  if (!service) { button.hidden = true; return; }
+  button.innerHTML = `${service.name} · ${money(service.price)}`;
+});
 initTheme();
 renderBarbers();
 initBarberRailNav();
@@ -882,3 +893,6 @@ initHeader();
 initTicker();
 $('#year').textContent = String(new Date().getFullYear());
 runLoader();
+
+}
+startSite();
