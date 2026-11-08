@@ -22,3 +22,13 @@ The supplied public project URL and publishable key are configured in `src/supab
 If the database has not been set up or the connection fails, the website displays its original bundled content. An empty configured collection intentionally displays no items. The current image library UI prevents deletion of referenced uploads; SQL-authorized admins still have direct storage access. It does not automatically purge by age or schedule cleanup.
 
 Enable MFA for Supabase project owners and keep administrator passwords unique. Disable public Auth signup if it is not needed (only listed admins get editing privileges regardless).
+
+## Barber-lounge admin upgrade + Google Ads planner
+
+After the original setup, run **admin-upgrade.sql** in the SQL Editor. It adds a separate `ad_campaigns` table; campaign budgets, notes and results are readable/writable only by authenticated site administrators under RLS. Existing content tables and images are unchanged.
+
+The refreshed admin includes a charcoal/forest-and-brass barber theme, mobile layouts, overview counts, quick-add actions, searchable content, duplication, photo previews, unsaved-change warnings, recent content updates and a downloadable JSON content backup (export only, not an automated backup or restore system).
+
+**Google Ads is a manual planner, not an API connection.** Create and edit campaign plans, set a total budget in KSh, enter spend/clicks/conversions, set dates and planner statuses, keep audience/keyword notes, and link to your real Google Ads campaign. The dashboard derives CPC and cost per conversion from the values you enter and flags spend above the planned budget. Export campaign records as CSV. Changing status or deleting a record here never changes delivery or spends money on Google. Campaign schedules are planning dates, not automated launch/pause controls. Results are not synced or verified with Google.
+
+Browser smoke test (mocked Supabase, no live writes): install `@playwright/test` without saving it, run `npx playwright install --with-deps chromium`, start Vite, and run `node tests/admin-smoke.mjs`. Test screenshots default to `/tmp`; set `ADMIN_SCREENSHOT_DIR` to change that directory.
