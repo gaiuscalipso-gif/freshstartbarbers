@@ -9,8 +9,7 @@ export async function showAds(body,run,back){
  const toolbar=el('div',null,{className:'admin-actions'});
  const b=el('button','← Dashboard');b.onclick=()=>run(back);
  const add=el('button','+ Plan campaign');add.onclick=()=>edit();
- const google=el('a','Open Google Ads ↗',{href:'https://ads.google.com/',target:'_blank',rel:'noopener noreferrer',className:'admin-link'});
- toolbar.append(b,add,google);body.append(toolbar);
+ toolbar.append(b,add);body.append(toolbar);
  let rows;
  try{rows=check(await supabase.from('ad_campaigns').select('*').order('updated_at',{ascending:false}));}
  catch(e){if(e.code==='PGRST205'||e.code==='42P01')throw Error('Run supabase/admin-upgrade.sql in the Supabase SQL Editor to enable the private campaign planner.');throw e;}
